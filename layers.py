@@ -1,3 +1,4 @@
+# from inits import *  #TODO
 from init import *  #TODO
 import tensorflow.compat.v1 as tf
 
