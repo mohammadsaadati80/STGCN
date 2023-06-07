@@ -1,5 +1,5 @@
-from inits import *
-import tensorflow as tf
+from init import *  #TODO
+import tensorflow.compat.v1 as tf
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS

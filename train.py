@@ -39,15 +39,15 @@ import numpy as np
 np.random.seed(seed_value)
 
 # 4. Set `tensorflow` pseudo-random generator at a fixed value
-tf.set_random_seed(seed_value)
+tf.random.set_seed(seed_value)
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-config = tf.ConfigProto()
+config = tf.compat.v1.ConfigProto()
 config.gpu_options.allow_growth = True
-sess = tf.Session(config=config)
+sess = tf.compat.v1.Session(config=config)
 
 
-flags = tf.app.flags
+flags = tf.compat.v1.app.flags
 FLAGS = flags.FLAGS
 # 'cora', 'citeseer', 'pubmed'
 flags.DEFINE_string('dataset', dataset, 'Dataset string.')
@@ -89,16 +89,16 @@ elif FLAGS.model == 'dense':
     model_func = MLP
 else:
     raise ValueError('Invalid argument for model: ' + str(FLAGS.model))
-
+tf.compat.v1.disable_eager_execution()
 # Define placeholders
 placeholders = {
-    'support': [tf.sparse_placeholder(tf.float32) for _ in range(num_supports)],
-    'features': tf.sparse_placeholder(tf.float32, shape=tf.constant(features[2], dtype=tf.int64)),
-    'labels': tf.placeholder(tf.float32, shape=(None, y_train.shape[1])),
-    'labels_mask': tf.placeholder(tf.int32),
-    'dropout': tf.placeholder_with_default(0., shape=()),
+    'support': [tf.compat.v1.sparse_placeholder(tf.float32) for _ in range(num_supports)],
+    'features': tf.compat.v1.sparse_placeholder(tf.float32, shape=tf.constant(features[2], dtype=tf.int64)),
+    'labels': tf.compat.v1.placeholder(tf.float32, shape=(None, y_train.shape[1])),
+    'labels_mask': tf.compat.v1.placeholder(tf.int32),
+    'dropout': tf.compat.v1.placeholder_with_default(0., shape=()),
     # helper variable for sparse dropout
-    'num_features_nonzero': tf.placeholder(tf.int32)
+    'num_features_nonzero': tf.compat.v1.placeholder(tf.int32)
 }
 
 # Create model
